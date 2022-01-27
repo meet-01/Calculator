@@ -1,11 +1,17 @@
 import React, { useState } from "react";
+import { useTheme } from "../Context/ThemeContext";
 
-const App = () => {
+const Calculator = () => {
+  const { theme, switchTheme } = useTheme();
+  console.log({ theme });
+
+  //States
   const [currentValue, setCurrentValue] = useState("");
   const [previousValue, setPreviousValue] = useState("");
   const [operator, setOperator] = useState("");
   const [scientificMode, setScientificMode] = useState(true);
 
+  //Functions
   const inputNumber = (e) => {
     const number = e.target.name;
     setCurrentValue(currentValue + number);
@@ -18,7 +24,8 @@ const App = () => {
 
   const signChange = () => {
     let value = currentValue.toString();
-    if (value.charAt(0) === "-") {
+    const removeMinus = value.charAt(0) === "-";
+    if (removeMinus) {
       setCurrentValue(value.substring(1));
     } else {
       setCurrentValue("-" + currentValue);
@@ -85,15 +92,16 @@ const App = () => {
   };
 
   return (
-    <div className="container">
-      <div>
+    <div className="container" data-theme={theme}>
+      <button onClick={switchTheme}>THEME TOGGLE</button>
+      <div className="result">
         {previousValue}
         <div> {operator}</div>
+        <div>{currentValue}</div>
       </div>
-      <div>{currentValue}</div>
       <div className="row">
         <button name="1" onClick={inputNumber}>
-          1
+          1{" "}
         </button>
         <button name="2" onClick={inputNumber}>
           2
@@ -160,4 +168,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default Calculator;
