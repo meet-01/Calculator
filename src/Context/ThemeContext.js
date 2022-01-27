@@ -12,8 +12,8 @@ const ThemeProvider = ({ children }) => {
 
   const switchTheme = () => {
     const newTheme = theme === themes.light ? themes.dark : themes.light;
-    console.log({ newTheme });
-    document.body.dataset.theme = newTheme;
+    document.body.style.backgroundColor =
+      newTheme === "light" ? "#fff" : "#000";
     setTheme(newTheme);
   };
 
