@@ -3,7 +3,6 @@ import { useTheme } from "../Context/ThemeContext";
 
 const Calculator = () => {
   const { theme, switchTheme } = useTheme();
-  console.log({ theme });
 
   //States
   const [currentValue, setCurrentValue] = useState("");
@@ -93,7 +92,9 @@ const Calculator = () => {
 
   return (
     <div className="container" data-theme={theme}>
-      <button onClick={switchTheme}>THEME TOGGLE</button>
+      <button onClick={switchTheme}>
+        {theme === "light" ? "Lights OFF" : "Lights ON"}
+      </button>
       <div className="result">
         {previousValue}
         <div> {operator}</div>
