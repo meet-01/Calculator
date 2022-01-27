@@ -2,19 +2,21 @@ import React, { useState } from "react";
 import { useTheme } from "../Context/ThemeContext";
 
 const Calculator = () => {
+  //Global Context states
   const { theme, switchTheme } = useTheme();
 
   //States
   const [currentValue, setCurrentValue] = useState("");
   const [previousValue, setPreviousValue] = useState("");
   const [operator, setOperator] = useState("");
-  const [scientificMode, setScientificMode] = useState(true);
+  const [scientificMode, setScientificMode] = useState(false);
 
   //Functions
   const inputNumber = (e) => {
     const number = e.target.name;
     setCurrentValue(currentValue + number);
   };
+
   const reset = () => {
     setCurrentValue("");
     setPreviousValue("");
@@ -23,8 +25,8 @@ const Calculator = () => {
 
   const signChange = () => {
     let value = currentValue.toString();
-    const removeMinus = value.charAt(0) === "-";
-    if (removeMinus) {
+    const negativeNumber = value.charAt(0) === "-";
+    if (negativeNumber) {
       setCurrentValue(value.substring(1));
     } else {
       setCurrentValue("-" + currentValue);
@@ -36,9 +38,10 @@ const Calculator = () => {
     setCurrentValue(currentNumber * currentNumber);
   };
 
-  const squareRootResult = () => {
+  const squareRootResultNumber = () => {
     setCurrentValue(Math.sqrt(currentValue));
   };
+
   const operation = (e) => {
     const operationType = e.target.name;
     setOperator(operationType);
@@ -57,11 +60,11 @@ const Calculator = () => {
   const equals = () => {
     let value = compute();
     if (value === undefined || value === null) return;
-
     setCurrentValue(value);
     setPreviousValue("");
     setOperator("");
   };
+
   const compute = () => {
     let result;
     let previousNumber = parseInt(previousValue);
@@ -81,9 +84,14 @@ const Calculator = () => {
         result = previousNumber * currentNumber;
         break;
       case "/":
-        result = previousNumber / currentNumber;
-        break;
-
+        if (currentNumber === 0) {
+          alert("you can't divide by 0");
+          setCurrentValue("");
+          break;
+        } else {
+          result = previousNumber / currentNumber;
+          break;
+        }
       default:
         break;
     }
@@ -92,7 +100,15 @@ const Calculator = () => {
 
   return (
     <div className="container" data-theme={theme}>
-      <button onClick={switchTheme}>
+      <button
+        onClick={switchTheme}
+        style={{
+          marginBottom: "3rem",
+          border: "none",
+          padding: "1rem",
+          cursor: "pointer",
+        }}
+      >
         {theme === "light" ? "Lights OFF" : "Lights ON"}
       </button>
       <div className="result">
@@ -155,14 +171,14 @@ const Calculator = () => {
       </div>
       <div className="scientific__mode">
         <button onClick={() => setScientificMode(!scientificMode)}>
-          Scientific Mode - {scientificMode ? "ON" : "OFF"}
+          Scientific Mode - {scientificMode ? "OFF" : "ON"}
         </button>
       </div>
       {scientificMode && (
         <div className="row">
           <button onClick={signChange}>-/+</button>
           <button onClick={squareNumber}>Sqaure </button>
-          <button onClick={squareRootResult}>Root √</button>
+          <button onClick={squareRootResultNumber}>Root √</button>
         </div>
       )}
     </div>
