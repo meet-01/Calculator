@@ -12,13 +12,12 @@ const ThemeProvider = ({ children }) => {
 
   const switchTheme = () => {
     const newTheme = theme === themes.light ? themes.dark : themes.light;
-    document.body.style.backgroundColor =
-      newTheme === "light" ? "#fff" : "#000";
+    document.body.dataset.theme = newTheme;
     setTheme(newTheme);
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, switchTheme }}>
+    <ThemeContext.Provider value={{ theme, themes, switchTheme }}>
       {children}
     </ThemeContext.Provider>
   );

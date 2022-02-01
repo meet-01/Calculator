@@ -1,10 +1,20 @@
 :root {
   --primaryBackground: #fff;
-  --secondaryBackground: #000;
   --primaryButtonBackground: #f0f0f0;
-  --secondaryButtonBackground: #666;
   --primaryFontColor: #000;
-  --secondaryFontColor: #fff;
+}
+[data-theme="dark"] {
+  --primaryBackground: #000;
+  --primaryButtonBackground: #666;
+  --primaryFontColor: #fff;
+}
+body {
+  background-color: var(--primaryBackground);
+  color: var(--primaryFontColor);
+}
+button {
+  background-color: var(--primaryButtonBackground);
+  color: var(--primaryFontColor);
 }
 
 .App {
@@ -17,13 +27,22 @@
 .container {
   width: 500px;
 }
+
+.btn__themeswitch {
+  margin-bottom: 3rem;
+  border: none;
+  padding: 1rem;
+  cursor: pointer;
+}
 .result {
   border: 2px solid whitesmoke;
+  font-size: 20px;
   height: 4rem;
 }
 .row {
   display: flex;
 }
+
 .row > button {
   font-size: 1rem;
   width: 10rem;
@@ -42,22 +61,4 @@
   cursor: pointer;
   border-radius: 4px;
   margin: 2px;
-}
-
-[data-theme="light"] {
-  background-color: var(--primaryBackground);
-  color: var(--primaryFontColor);
-}
-[data-theme="light"] button {
-  background-color: var(--primaryButtonBackground);
-  color: var(--primaryFontColor);
-}
-
-[data-theme="dark"] {
-  background-color: var(--secondaryBackground);
-  color: var(--secondaryFontColor);
-}
-[data-theme="dark"] button {
-  background-color: var(--secondaryButtonBackground);
-  color: var(--secondaryFontColor);
 }

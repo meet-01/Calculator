@@ -3,7 +3,7 @@ import { useTheme } from "../Context/ThemeContext";
 
 const Calculator = () => {
   //Global Context states
-  const { theme, switchTheme } = useTheme();
+  const { theme, themes, switchTheme } = useTheme();
 
   //States
   const [currentValue, setCurrentValue] = useState("");
@@ -14,6 +14,7 @@ const Calculator = () => {
   //Functions
   const inputNumber = (e) => {
     const number = e.target.name;
+    //Concat
     setCurrentValue(currentValue + number);
   };
 
@@ -25,8 +26,8 @@ const Calculator = () => {
 
   const signChange = () => {
     let value = currentValue.toString();
-    const negativeNumber = value.charAt(0) === "-";
-    if (negativeNumber) {
+    const isNegativeNumber = value.charAt(0) === "-";
+    if (isNegativeNumber) {
       setCurrentValue(value.substring(1));
     } else {
       setCurrentValue("-" + currentValue);
@@ -43,10 +44,10 @@ const Calculator = () => {
   };
 
   const operation = (e) => {
+    if (currentValue === "") return;
     const operationType = e.target.name;
     setOperator(operationType);
 
-    if (currentValue === "") return;
     if (previousValue !== "") {
       let value = compute();
       setPreviousValue(value);
@@ -54,12 +55,13 @@ const Calculator = () => {
       setPreviousValue(currentValue);
     }
     setCurrentValue("");
-    setOperator(operationType);
   };
 
   const equals = () => {
     let value = compute();
-    if (value === undefined || value === null) return;
+    // if (value === undefined || value === null) return;
+    // https://262.ecma-international.org/5.1/#sec-11.9.3
+    if (value == null) return;
     setCurrentValue(value);
     setPreviousValue("");
     setOperator("");
@@ -67,10 +69,10 @@ const Calculator = () => {
 
   const compute = () => {
     let result;
-    let previousNumber = parseInt(previousValue);
-    let currentNumber = parseInt(currentValue);
+    const previousNumber = parseInt(previousValue);
+    const currentNumber = parseInt(currentValue);
 
-    //incase previous number or current is not a number check.
+    //incase Previous value or Current value is not a number check.
     if (isNaN(previousNumber) || isNaN(currentNumber)) return;
 
     switch (operator) {
@@ -99,17 +101,9 @@ const Calculator = () => {
   };
 
   return (
-    <div className="container" data-theme={theme}>
-      <button
-        onClick={switchTheme}
-        style={{
-          marginBottom: "3rem",
-          border: "none",
-          padding: "1rem",
-          cursor: "pointer",
-        }}
-      >
-        {theme === "light" ? "Lights OFF" : "Lights ON"}
+    <div className="container">
+      <button className="btn__themeswitch" onClick={switchTheme}>
+        {theme === themes.light ? "Lights OFF" : "Lights ON"}
       </button>
       <div className="result">
         {previousValue}
@@ -118,7 +112,7 @@ const Calculator = () => {
       </div>
       <div className="row">
         <button name="1" onClick={inputNumber}>
-          1{" "}
+          1
         </button>
         <button name="2" onClick={inputNumber}>
           2
